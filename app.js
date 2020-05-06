@@ -48,7 +48,7 @@ app.post("/", function(req, res) {
   const options = {
     method: "POST",
     // basic authenctication where MAILCHIMP_API_KEY is obtained from your Mailchimp account APIs
-    auth: "BlackRoseSociety:" + process.env.MAILCHIMP_API_KEY;
+    auth: "BlackRoseSociety:" + process.env.MAILCHIMP_API_KEY
   };
   // creating the POST request
   const request = https.request(url, options, function(response) {
@@ -73,5 +73,5 @@ app.post("/", function(req, res) {
 });
 
 app.listen(PORT, function() {
-  console.log("Server running on port " + port);
+  console.log("Server running on port " + PORT);
 });

@@ -1,2 +1,4 @@
-# hiding environment variables like api keys
+# environment variables like api keys
 .env
+# external node_modules
+node_modules/

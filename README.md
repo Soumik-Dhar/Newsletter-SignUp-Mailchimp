@@ -32,7 +32,7 @@ $ git clone https://github.com/Soumik-Dhar/Newsletter-SignUp-Mailchimp.git
 ```
 ```bash
 # Go into the project folder
-$ cd Newsletter-SignUp-Mailchimp
+$ cd Newsletter-SignUp-Mailchimp/
 ```
 
 > Setup .env file to store environment variables
@@ -42,9 +42,11 @@ $ cd Newsletter-SignUp-Mailchimp
 # To rename the file from the command line
 $ mv .sample-env .env
 ```
-2. Replace the MAILCHIMP_API_KEY in the .env file with your Mailchimp account API key.
+2. Open the .env file using a text editor of your choice.
 
-3. Replace the MAILCHIMP_LIST_ID in the .env file with your Mailchimp 'audience unique ID'
+3. Replace the MAILCHIMP_API_KEY in the .env file with your Mailchimp account API key.
+
+4. Replace the MAILCHIMP_LIST_ID in the .env file with your Mailchimp 'audience unique ID'
 
 ```bash
 # Install dependencies

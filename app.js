@@ -14,28 +14,29 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+// setting ejs as view engine
+app.set("view engine", "ejs");
+
 // storing ports for production and development
 const PORT = (process.env.PORT || 3000);
 
+// loading sign up landing page
 app.get("/", function(req, res) {
-  res.sendFile(__dirname + "/signup.html");
+  res.render("signup");
 });
 
+// handling sign up request
 app.post("/", function(req, res) {
   // getting form data from bodyParser
   const form = req.body;
-  // getting user input from individual text fields
-  const firstName = form.firstName;
-  const lastName = form.lastName;
-  const email = form.email;
   // creating data object to be posted to Mailchimp servers
   const data = {
     members: [{
-      email_address: email,
+      email_address: form.email,
       status: "subscribed",
       merge_fields: {
-        FNAME: firstName,
-        LNAME: lastName
+        FNAME: form.firstName,
+        LNAME: form.lastName
       }
     }]
   };
@@ -61,24 +62,32 @@ app.post("/", function(req, res) {
     response.on("data", function(data) {
       // parsing data into JSON format
       const status = JSON.parse(data);
-      // logging data returned
-      console.log(status.new_members);
-      console.log(status.updated_members);
+      // logging errors returned
       console.log(status.errors);
       console.log("Error count: " + status.error_count);
-      // checking status for success or failure
-      if (!status.error_count)
-        res.sendFile(__dirname + "/success.html");
-      else
-        res.sendFile(__dirname + "/failure.html");
+      // signup successful
+      if (!status.error_count) {
+        // rendering success page
+        res.render("status", {
+          error: 0
+        });
+        // signup failed
+      } else {
+        // rendering failure page
+        res.render("status", {
+          message: status.errors[0].error,
+          error: 1
+        });
+      }
     });
   });
-  
+
   // posting data to Mailchimp servers
   request.write(packedData);
   request.end();
 });
 
+// starting server
 app.listen(PORT, function() {
   console.log("Server running on port " + PORT);
 });

@@ -1,0 +1,2 @@
+MAILCHIMP_API_KEY="<insert your Mailchimp account API key>"
+MAILCHIMP_LIST_ID="<insert your Mailchimp audience unique ID>"

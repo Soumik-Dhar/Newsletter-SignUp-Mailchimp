@@ -1,0 +1,20 @@
+<%- include("header") -%>
+
+  <form class="status">
+    <!-- Company logo -->
+    <img class="mb-3 logo" src="images/logo.png" alt="Black-Rose-Society-logo" width="100" height="100">
+    <!-- For successful signup -->
+    <% if (!error) { %>
+      <h1 class="join">Awesome!</h1>
+      <p>Thank you for subscribing to us! 😊</p>
+      <p> So excited to have you on board! ✌</p>
+      <a class="btn btn-lg btn-success return" href="/">Return</a>
+      <!-- For failure -->
+    <% } else { %>
+      <h1 class="join">Yikes!</h1>
+      <p>There was a problem signing you up. 🙁</p>
+      <p>Error details: <br> <%= message %></p>
+      <p>Please try again!</p>
+      <a class="btn btn-lg btn-warning return" href="/">Retry</a>
+    <% } %>
+<%- include("footer") -%>

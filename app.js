@@ -1,21 +1,20 @@
-//
+// importing modules
 const express = require("express");
 const bodyParser = require("body-parser");
 const https = require("https");
+// managing environment variables for production and development cases
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config({
     silent: true
   });
 }
-
 const app = express();
-
+// using static files and body-parser
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({
   extended: true
 }));
-
-// storing ports for production or development
+// storing ports for production and development
 const PORT = (process.env.PORT || 3000);
 
 app.get("/", function(req, res) {
@@ -42,14 +41,21 @@ app.post("/", function(req, res) {
   };
   // packing the data into a string before sending to Mailchimp
   const packedData = JSON.stringify(data);
-  // creating the request URL where MAILCHIMP_LIST_ID is obtained from Mailchimp 'audience unique ID'
-  const url = "https://us8.api.mailchimp.com/3.0/lists/" + process.env.MAILCHIMP_LIST_ID;
+
+  // getting the mailchimp 'audience unique ID' and 'API key' from the .env file
+  const LIST_ID = process.env.MAILCHIMP_LIST_ID;
+  const API_KEY = process.env.MAILCHIMP_API_KEY;
+  // getting the last 3 characters from the API key to create the endpoint
+  const usX = API_KEY.slice(-3);
+  // creating the request URL using LIST_ID and API_KEY
+  const url = "https://" + usX + ".api.mailchimp.com/3.0/lists/" + LIST_ID;
   // creating the options object
   const options = {
     method: "POST",
-    // basic authenctication where MAILCHIMP_API_KEY is obtained from your Mailchimp account APIs
-    auth: "BlackRoseSociety:" + process.env.MAILCHIMP_API_KEY
+    // basic HTTPs authenctication username:password
+    auth: "BlackRoseSociety:" + API_KEY
   };
+
   // creating the POST request
   const request = https.request(url, options, function(response) {
     response.on("data", function(data) {
@@ -67,6 +73,7 @@ app.post("/", function(req, res) {
         res.sendFile(__dirname + "/failure.html");
     });
   });
+  
   // posting data to Mailchimp servers
   request.write(packedData);
   request.end();
